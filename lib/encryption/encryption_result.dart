@@ -4,12 +4,16 @@ import 'encryption_artefacts.dart';
 import 'encryption_strategy.dart';
 import '../keys/derivation_artefacts.dart';
 
+/// Container for encrypted data which may contain key deriviation artefacts.
+/// Can be converted to Cryppo's serialization format by using the [serialize] method.
 class EncryptionResult {
   EncryptionStrategy strategy;
   List<int> cipherText;
   EncryptionArtefacts encryptionArtefacts;
   DerivationArtefacts derivationArtefacts;
 
+  /// Container for encrypted data which may contain key deriviation artefacts.
+  /// Can be converted to Cryppo's serialization format by using the [serialize] method.
   EncryptionResult(
       {this.strategy,
       this.cipherText,
@@ -18,6 +22,7 @@ class EncryptionResult {
       : assert(strategy != null),
         assert(cipherText != null);
 
+  /// Decode a serialized encrypted string into its components.
   EncryptionResult.fromSerialized(String serializedPayload) {
     final decomposedPayload = serializedPayload.split(".");
     if (!(decomposedPayload.length == 3 || decomposedPayload.length == 4)) {
@@ -29,6 +34,7 @@ class EncryptionResult {
     this.cipherText = base64Url.decode(cipherText);
   }
 
+  /// Converts the encryption result into Cryppo's serialization format for transfer over the wire.
   String serialize() {
     final encodedCipherText = base64Url.encode(cipherText);
     final serializedArtefacts = encryptionArtefacts.serialize();
@@ -40,6 +46,7 @@ class EncryptionResult {
     return serializedString;
   }
 
+  /// Serialize the encryption result
   @override
   String toString() {
     return serialize();

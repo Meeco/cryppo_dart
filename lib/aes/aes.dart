@@ -15,10 +15,13 @@ const _authTagLength = 16;
 // Match other cryppo implementations
 const _saltBytesLength = 12;
 
+/// Generic AES Encryption implementation
 class Aes implements EncryptionService {
   Cipher _cipher;
   EncryptionStrategy _strategy;
 
+  /// Provided some binary data and a [SymmetricKey] (key type dependant on the encryption scheme being used)
+  /// Return an [EncryptionResult]
   @override
   Future<EncryptionResult> encryptWithKey(List<int> data, Key key) async {
     assert(key is SymmetricKey, 'AES requires a `SymmetricKey`');
@@ -30,6 +33,8 @@ class Aes implements EncryptionService {
     return encryptWithKeyAndArtefacts(data, key, artefacts);
   }
 
+  /// Pass a string in Cryppo serialized encrypted format and a [SymmetricKey] (key type dependant on the
+  /// scheme being used) to return binary decrypted data.
   @override
   Future<Uint8List> decryptWithKey(String serialized, Key key) {
     assert(key is SymmetricKey, 'AES requires a `SymmetricKey`');
@@ -52,6 +57,7 @@ class Aes implements EncryptionService {
         nonce: Nonce(encryptionArtefacts.salt));
   }
 
+  /// Allows encryption with specified encryption artifacts (rather than generated ones).
   @override
   Future<EncryptionResult> encryptWithKeyAndArtefacts(
       List<int> data, Key key, EncryptionArtefacts artefacts) async {
@@ -71,16 +77,19 @@ class Aes implements EncryptionService {
   }
 }
 
+/// AES-GCM encryption with a 256-bit key.
 class Aes256Gcm extends Aes {
   Cipher _cipher = aesGcm;
   EncryptionStrategy _strategy = EncryptionStrategy.aes256Gcm;
 }
 
+/// AES-CBC encryption with a 256-bit key.
 class Aes256Cbc extends Aes {
   Cipher _cipher = aesCbc;
   EncryptionStrategy _strategy = EncryptionStrategy.aes256Cbc;
 }
 
+/// AES-CTR encryption with a 256-bit key.
 class Aes256Ctr extends Aes {
   Cipher _cipher = aesCtr;
   EncryptionStrategy _strategy = EncryptionStrategy.aes256Ctr;

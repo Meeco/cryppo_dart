@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+/// An RSA Signature's data
 class Signature {
   List<int> signature;
   List<int> data;
@@ -8,13 +9,16 @@ class Signature {
 
   Signature._(this.signature, this.data, this.keySize);
 
+  /// Create a duplicate of the provided signature
   Signature copy() {
     return new Signature._(List<int>.from(this.signature),
         List<int>.from(this.data), this.keySize);
   }
 
+  /// Create a [Signature] from raw signature information
   Signature.fromBytes({this.signature, this.data, this.keySize});
 
+  /// Deserialize a signature encoded with [serialize] into its component parts
   Signature.fromSerializedString(String serialized) {
     final decomposedPayload = serialized.split(".");
     if (decomposedPayload.length != 4) {
@@ -34,6 +38,7 @@ class Signature {
     }
   }
 
+  /// Serialize an RSA signature into Cryppo's signature serialization format
   String serialize() {
     return 'Sign.Rsa$keySize.${base64.encode(signature)}.${base64.encode(data)}';
   }

@@ -5,6 +5,8 @@ import 'package:cryptography/cryptography.dart';
 import '../keys/derivation_artefacts.dart';
 import '../keys/derivation_service.dart';
 
+/// Currently the only supported key derivation strategy
+/// https://en.wikipedia.org/wiki/Pbkdf2
 class Pbkdf2Hmac implements DerivationService {
   Future<List<int>> deriveKey(
       {String passphrase, DerivationArtefacts artefacts}) async {

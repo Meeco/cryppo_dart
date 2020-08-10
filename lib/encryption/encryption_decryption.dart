@@ -10,10 +10,16 @@ import 'encryption_strategy.dart';
 typedef DecryptionMethod = Future<Uint8List> Function(
     String serialized, DataEncryptionKey key);
 
+/// Provided an encrypted+serialized string (in Cryppo's encryption serialization format)
+/// and a [Key] (the type of which depends on the type of encryption used)
+/// return the decrypted binary data.
 Future<List<int>> decryptWithKey({String serialized, Key key}) async {
   return _decryptSerialized(serialized, key);
 }
 
+/// Provided an encrypted+serialized string (in Cryppo's encryption serialization format
+/// which includes serialized key derivation artefacts), derive the key (using the entered
+/// passphrase) and return the decrypted binary data.
 Future<List<int>> decryptWithKeyDerivedFromString(
     {String serialized, String passphrase}) async {
   final parts = serialized.split('.');
@@ -65,6 +71,7 @@ Future<EncryptionResult> encryptWithDerivedKey({
   return result..derivationArtefacts = derivedKey.derivationArtefacts;
 }
 
+/// Convert encryption strategy to a service and encrypt the data
 Future<EncryptionResult> _encrypt({
   EncryptionStrategy encryptionStrategy,
   Key key,
@@ -73,6 +80,7 @@ Future<EncryptionResult> _encrypt({
   return encryptionStrategy.toService().encryptWithKey(data, key);
 }
 
+/// Convert encryption strategy to a service and decrypt the data
 Future<List<int>> _decryptSerialized(String serialized, Key key) async {
   // Should read from the first part of serialized string
   final items = serialized.split('.');
