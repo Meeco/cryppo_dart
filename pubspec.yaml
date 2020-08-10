@@ -1,8 +1,8 @@
 name: cryppo
-description: A simplified cryptographic library by Meeco.
+description: A simplified cryptographic library by Meeco - encrypt and decrypt as well as sign and verify data.
 version: 0.0.1-dev.1
 author: Meeco <systems@meeco.me>
-homepage: https://github.com/Meeco/cryppo-dart
+homepage: https://github.com/Meeco/cryppo_dart
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
