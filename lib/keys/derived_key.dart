@@ -5,10 +5,12 @@ import 'derivation_artefacts.dart';
 
 import 'key.dart';
 
+/// An encryption key derived from a user-entered string using an algorithm such as Pbkdf2
 class DerivedKey implements SymmetricKey {
   final DataEncryptionKey key;
   final DerivationArtefacts derivationArtefacts;
 
+  /// Get the raw key
   get bytes {
     return key.bytes;
   }
@@ -16,6 +18,8 @@ class DerivedKey implements SymmetricKey {
   DerivedKey._({this.key, this.derivationArtefacts});
 }
 
+/// Provided a user-entered passphrase and artifacts serialized in cryppo's serialization format,
+/// derive the data encryption key.
 Future<DerivedKey> deriveKeyWithSerializedOptions(
     String passphrase, String serializedDerivationArtefacts) async {
   final DerivationArtefacts artefacts =
@@ -28,6 +32,9 @@ Future<DerivedKey> deriveKeyWithSerializedOptions(
       derivationArtefacts: artefacts);
 }
 
+/// Provided a user-entered passphrase and a key derivation strategy,
+/// derive a data encryption key with randomly generated derivation artefacts.
+/// The key and artefacts can be serialized for transfer over the wire and storage.
 Future<DerivedKey> deriveNewKeyFromString(
     String passphrase, DerivationStrategy strategy) async {
   final DerivationArtefacts artefacts = DerivationArtefacts.generate();

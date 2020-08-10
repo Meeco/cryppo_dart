@@ -62,6 +62,7 @@ class _Rsa implements EncryptionService {
   }
 }
 
+/// Sign some binary data with the provided Private Key
 String sign({RSAPrivateKey privateKey, List<int> data}) {
   final signature = privateKey.signSsaPkcs1v15(data);
 
@@ -70,11 +71,14 @@ String sign({RSAPrivateKey privateKey, List<int> data}) {
       .serialize();
 }
 
+/// Verify some signed binary data (sierlized in Cryppo's signature serliazation format)
+/// with the provided Public Key
 bool verify({RSAPublicKey publicKey, String serializedSignature}) {
   final signature = Signature.fromSerializedString(serializedSignature);
   return publicKey.verifySsaPkcs1v15(signature.signature, signature.data);
 }
 
+/// RSA implementation with a 4096 bit key
 class Rsa4096 extends _Rsa {
   EncryptionStrategy _strategy = EncryptionStrategy.rsa4096;
   int _keySize = 4096;

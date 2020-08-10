@@ -8,8 +8,9 @@ import 'derivation_strategy.dart';
 
 // Match other cryppo implementations
 const _saltLength = 20;
-final random = Random.secure();
+final _random = Random.secure();
 
+/// Derivation Artefacts from a key derivation strategy (such as Pbkdf2)
 class DerivationArtefacts {
   String version;
   List<int> salt;
@@ -27,18 +28,21 @@ class DerivationArtefacts {
     this.strategy,
   });
 
+  /// Randomly generate new key derivation artefacts
   DerivationArtefacts.generate(
       {minIterations = 20000,
       defaultLength = 32,
       iterationVariance = 10,
       strategy = DerivationStrategy.pbkdf2Hmac})
       : iterations = minIterations +
-            random.nextInt((minIterations * (iterationVariance / 100)).floor()),
+            _random
+                .nextInt((minIterations * (iterationVariance / 100)).floor()),
         strategy = strategy,
         length = 16,
-        salt = List<int>.generate(_saltLength, (i) => random.nextInt(256)),
+        salt = List<int>.generate(_saltLength, (i) => _random.nextInt(256)),
         version = 'K';
 
+  /// Serialize the artefacts in Cryppo's artefact serialization format ([serialize]) to be appended onto a serialized encrypted string
   DerivationArtefacts.fromSerialized(String serialized) {
     final parts = serialized.split('.');
     strategy = derivationStrategyFromString(parts[0]);
@@ -54,6 +58,7 @@ class DerivationArtefacts {
     length = deserialized['l'];
   }
 
+  /// Convert arteacts into Cryppo's artefact serialization format. Can be reloaded with [DerivationArtefacts.fromSerialized]
   String serialize() {
     final artefactPayload = BSON()
         .serialize({'i': iterations, 'iv': BsonBinary.from(salt), 'l': length});
@@ -62,6 +67,7 @@ class DerivationArtefacts {
     return '${strategy.encode()}.$serializedArtefacts';
   }
 
+  /// Serializes the artifacts with [serialize]
   @override
   String toString() {
     return serialize();

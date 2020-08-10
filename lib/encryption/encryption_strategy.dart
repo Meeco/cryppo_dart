@@ -3,13 +3,24 @@ import 'encryption_service.dart';
 import '../aes/aes.dart';
 import '../rsa/rsa.dart';
 
+/// Encryption strategy. Preference should be `EncryptionStrategy.aes256Gcm` for symmetric encryption and
+/// `EncryptionStrategy.rsa4096` for asymmetric encryption.
 enum EncryptionStrategy {
+  /// (Recommended for symmetric encryption) https://en.wikipedia.org/wiki/Galois/Counter_Mode
   aes256Gcm,
+
+  /// https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_block_chaining_(CBC)
   aes256Cbc,
+
+  /// https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Counter_(CTR)
   aes256Ctr,
+
+  /// For asymmetric encryption
+  /// https://en.wikipedia.org/wiki/RSA_(cryptosystem)
   rsa4096,
 }
 
+/// Convert an [EncryptionStrategy] into its respective [EncryptionService].
 extension MapToService on EncryptionStrategy {
   EncryptionService toService() {
     switch (this) {
@@ -25,6 +36,7 @@ extension MapToService on EncryptionStrategy {
     throw 'Encryption strategy has no service';
   }
 
+  /// Convert an [EncryptionStrategy] to a string so it can be used in Cryppo's serialization format
   String encode() {
     switch (this) {
       case EncryptionStrategy.aes256Gcm:
@@ -40,6 +52,7 @@ extension MapToService on EncryptionStrategy {
   }
 }
 
+/// Given a string from Cryppo's seralization format, return the corresponding [EncryptionStrategy]
 EncryptionStrategy encryptionStrategyFromString(String strategy) {
   switch (strategy) {
     case 'Aes256Gcm':
