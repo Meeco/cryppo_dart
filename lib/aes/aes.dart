@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:cryptography/cryptography.dart';
 
-import '../keys/key.dart';
+import '../keys/encryption_key.dart';
 import '../encryption/encryption_service.dart';
 import '../encryption/encryption_artefacts.dart';
 import '../encryption/encryption_result.dart';
@@ -23,7 +23,8 @@ class Aes implements EncryptionService {
   /// Provided some binary data and a [SymmetricKey] (key type dependant on the encryption scheme being used)
   /// Return an [EncryptionResult]
   @override
-  Future<EncryptionResult> encryptWithKey(List<int> data, Key key) async {
+  Future<EncryptionResult> encryptWithKey(
+      List<int> data, EncryptionKey key) async {
     assert(key is SymmetricKey, 'AES requires a `SymmetricKey`');
     final artefacts = EncryptionArtefacts(
       authData: utf8.encode('none'),
@@ -36,7 +37,7 @@ class Aes implements EncryptionService {
   /// Pass a string in Cryppo serialized encrypted format and a [SymmetricKey] (key type dependant on the
   /// scheme being used) to return binary decrypted data.
   @override
-  Future<Uint8List> decryptWithKey(String serialized, Key key) {
+  Future<Uint8List> decryptWithKey(String serialized, EncryptionKey key) {
     assert(key is SymmetricKey, 'AES requires a `SymmetricKey`');
     final items = serialized.split('.');
     final decodedPairs = items.sublist(1);
@@ -60,7 +61,7 @@ class Aes implements EncryptionService {
   /// Allows encryption with specified encryption artifacts (rather than generated ones).
   @override
   Future<EncryptionResult> encryptWithKeyAndArtefacts(
-      List<int> data, Key key, EncryptionArtefacts artefacts) async {
+      List<int> data, EncryptionKey key, EncryptionArtefacts artefacts) async {
     final encrypted = await _cipher.encrypt(data,
         secretKey: SecretKey((key as SymmetricKey).bytes),
         nonce: artefacts.nonce,

@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import '../keys/key.dart';
+import '../keys/encryption_key.dart';
 import '../encryption/encryption_artefacts.dart';
 import '../encryption/encryption_result.dart';
 import '../encryption/encryption_strategy.dart';
@@ -20,14 +20,15 @@ class _Rsa implements EncryptionService {
     return KeyPair.generate(keySize: _keySize);
   }
 
-  Future<EncryptionResult> encryptWithKey(List<int> data, Key key) async {
+  Future<EncryptionResult> encryptWithKey(
+      List<int> data, EncryptionKey key) async {
     assert(key is KeyPair, 'RSA encryption requires a `KeyPair`');
     final KeyPair keyPair = key;
     assert(keyPair.publicKey != null, 'Public key is required for encryption');
     return _encryptWithPublicKey(keyPair.publicKey, data);
   }
 
-  Future<Uint8List> decryptWithKey(String serialized, Key key) async {
+  Future<Uint8List> decryptWithKey(String serialized, EncryptionKey key) async {
     assert(key is KeyPair, 'RSA decryption requires a `KeyPair`');
     final KeyPair keyPair = key;
     assert(
@@ -56,7 +57,7 @@ class _Rsa implements EncryptionService {
 
   @override
   Future<EncryptionResult> encryptWithKeyAndArtefacts(
-      List<int> data, Key key, EncryptionArtefacts artefacts) {
+      List<int> data, EncryptionKey key, EncryptionArtefacts artefacts) {
     // TODO: implement encryptWithKeyAndArtefacts
     throw UnimplementedError();
   }
