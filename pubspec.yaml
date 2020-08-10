@@ -1,7 +1,7 @@
 name: cryppo
 description: A simplified cryptographic library by Meeco.
 version: 0.0.1-dev.1
-author: Meeco
+author: Meeco <support@meeco.me>
 homepage: https://github.com/Meeco/cryppo-dart
 
 environment:
@@ -9,13 +9,14 @@ environment:
 
 dependencies:
   cryptography: ^1.4.0
-  bson: 0.3.2
+  bson: ^0.3.2
   pointycastle: ^1.0.2
-  asn1lib:
-  basic_utils: 2.6.0
-  ninja: 3.0.0
+  asn1lib: ^0.6.5
+  basic_utils: ^2.6.0
+  ninja: ^3.0.0
 
 dev_dependencies:
+  convert: ^2.1.1
   flutter:
     sdk: flutter
   flutter_test:

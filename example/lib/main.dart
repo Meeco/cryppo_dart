@@ -1,5 +1,5 @@
-import 'package:demo/gcm_page.dart';
-import 'package:demo/rsa_page.dart';
+import './gcm_page.dart';
+import './rsa_page.dart';
 import 'package:flutter/material.dart';
 
 void main() async {

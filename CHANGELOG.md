@@ -1,6 +1,6 @@
-## [0.0.1] - Initial public release
+## [0.0.1-dev.1] - Initial public prerelease
 
-First public release
+First public prerelease
 
 - Support AES-GCM encryption/decryption
 - Support RSA encryption/decrypting as well as signing/verification
