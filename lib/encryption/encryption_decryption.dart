@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import '../keys/data_encryption_key.dart';
 import '../keys/derivation_strategy.dart';
 import '../keys/derived_key.dart';
-import '../keys/key.dart';
+import '../keys/encryption_key.dart';
 import 'encryption_result.dart';
 import 'encryption_strategy.dart';
 
@@ -13,7 +13,7 @@ typedef DecryptionMethod = Future<Uint8List> Function(
 /// Provided an encrypted+serialized string (in Cryppo's encryption serialization format)
 /// and a [Key] (the type of which depends on the type of encryption used)
 /// return the decrypted binary data.
-Future<List<int>> decryptWithKey({String serialized, Key key}) async {
+Future<List<int>> decryptWithKey({String serialized, EncryptionKey key}) async {
   return _decryptSerialized(serialized, key);
 }
 
@@ -41,12 +41,12 @@ Future<List<int>> decryptWithKeyDerivedFromString(
   return _decryptSerialized(parts.sublist(0, 3).join('.'), derivedKey.key);
 }
 
-/// Encrypts [data] with [key], data must be provided in bytes
-/// A [key] can be a symmetrical key or a key pair, which corresponds to
+/// Encrypts [data] with [EncryptionKey], data must be provided in bytes
+/// A [EncryptionKey] can be a symmetrical key or a key pair, which corresponds to
 /// AES or RSA [EncryptionStrategy]
 Future<EncryptionResult> encryptWithKey({
   EncryptionStrategy encryptionStrategy,
-  Key key,
+  EncryptionKey key,
   List<int> data,
 }) {
   return _encrypt(data: data, encryptionStrategy: encryptionStrategy, key: key);
@@ -54,7 +54,7 @@ Future<EncryptionResult> encryptWithKey({
 
 /// Encrypts [data] with a key derived from [passphrase]
 /// using [keyDerivationStrategy], data must be provided in bytes
-/// A [key] can be a symmetrical key or a key pair, which corresponds to
+/// A [EncryptionKey] can be a symmetrical key or a key pair, which corresponds to
 /// AES or RSA [EncryptionStrategy]
 Future<EncryptionResult> encryptWithDerivedKey({
   EncryptionStrategy encryptionStrategy,
@@ -74,14 +74,15 @@ Future<EncryptionResult> encryptWithDerivedKey({
 /// Convert encryption strategy to a service and encrypt the data
 Future<EncryptionResult> _encrypt({
   EncryptionStrategy encryptionStrategy,
-  Key key,
+  EncryptionKey key,
   Uint8List data,
 }) {
   return encryptionStrategy.toService().encryptWithKey(data, key);
 }
 
 /// Convert encryption strategy to a service and decrypt the data
-Future<List<int>> _decryptSerialized(String serialized, Key key) async {
+Future<List<int>> _decryptSerialized(
+    String serialized, EncryptionKey key) async {
   // Should read from the first part of serialized string
   final items = serialized.split('.');
   final encryptionStrategy = encryptionStrategyFromString(items[0]);

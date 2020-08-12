@@ -1,4 +1,4 @@
-import '../keys/key.dart';
+import '../keys/encryption_key.dart';
 import 'package:ninja/asymmetric/rsa/rsa.dart';
 import 'package:pointycastle/pointycastle.dart' as pointy_castle;
 import 'package:basic_utils/basic_utils.dart';

@@ -3,7 +3,7 @@ import 'derivation_strategy.dart';
 import 'data_encryption_key.dart';
 import 'derivation_artefacts.dart';
 
-import 'key.dart';
+import 'encryption_key.dart';
 
 /// An encryption key derived from a user-entered string using an algorithm such as Pbkdf2
 class DerivedKey implements SymmetricKey {

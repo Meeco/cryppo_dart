@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'key.dart';
+import 'encryption_key.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:pointycastle/pointycastle.dart';
 
