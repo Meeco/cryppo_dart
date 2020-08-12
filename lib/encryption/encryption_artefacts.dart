@@ -38,7 +38,7 @@ class EncryptionArtefacts {
   }
 
   /// Convert artefacts to a format that can be used in Cryppo's encryption serialization format
-  serialize() {
+  String serialize() {
     final versionByte = utf8.encode('A');
     final bsonPayload = BSON().serialize({
       'iv': BsonBinary.from(salt),
