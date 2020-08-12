@@ -1,5 +1,7 @@
 # Cryppo Dart
 
+![build and test](https://github.com/Meeco/cryppo_dart/workflows/Build%20and%20Test/badge.svg)
+
 Cryppo Dart is a cryptographic library that enables you to encrypt and decrypt data. Cryppo Dart combines very different ciphers under one simplified API, and a set of serialization formats.
 
 This is a Dart port of Cryppo in [Ruby](https://github.com/Meeco/cryppo) and [JavaScript](https://github.com/Meeco/cryppo-js) used for the Meeco platform.
