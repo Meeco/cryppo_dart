@@ -39,6 +39,10 @@ class EncryptionResult {
     this.cipherText = base64Url.decode(cipherText);
     this.encryptionArtefacts =
         EncryptionArtefacts.fromSerialized(decomposedPayload[2]);
+    if (decomposedPayload.length == 4) {
+      this.derivationArtefacts =
+          DerivationArtefacts.fromSerialized(decomposedPayload[3]);
+    }
   }
 
   /// Converts the encryption result into Cryppo's serialization format for transfer over the wire.
