@@ -18,7 +18,7 @@ Future<void> main() async {
         encryptionStrategy: EncryptionStrategy.rsa4096);
     expect(encryptionResult.serialize().startsWith('Rsa4096.'), true);
     final decryptedBytes =
-        await rsa.decryptWithKey(encryptionResult.serialize(), keyPair);
+        await rsa.decryptEncryptionResultWithKey(encryptionResult, keyPair);
     final decryptedString = utf8.decode(decryptedBytes);
     expect(longString, decryptedString,
         reason: "string must match after encryption and decryption");
