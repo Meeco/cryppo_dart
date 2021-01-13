@@ -39,7 +39,7 @@ class DataEncryptionKey implements SymmetricKey {
   }
 
   /// Encode a key in a human-readable and url-safe format. Can be reloaded with [DataEncryptionKey.loadFromSerialized]
-  serialize() {
+  String serialize() {
     return base64Url.encode(_key);
   }
 }
