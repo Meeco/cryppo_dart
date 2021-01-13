@@ -21,7 +21,7 @@ main() async {
   int numChunks = 0;
 
   // List of serialised encrypted chunks of the file
-  List<String> serialisedEncryptedChunks = List();
+  final serialisedEncryptedChunks = <String>[];
   test(
     'can encrypt a file in chunks',
     () async {
