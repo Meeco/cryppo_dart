@@ -38,7 +38,7 @@ class DerivationArtefacts {
             _random
                 .nextInt((minIterations * (iterationVariance / 100)).floor()),
         strategy = strategy,
-        length = 16,
+        length = defaultLength,
         salt = List<int>.generate(_saltLength, (i) => _random.nextInt(256)),
         version = 'K';
 
