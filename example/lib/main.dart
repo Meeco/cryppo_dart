@@ -60,11 +60,11 @@ class _BottomTabBarState extends State<BottomTabBar> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.enhanced_encryption),
-            title: Text('RSA'),
+            label: 'RSA',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.lock),
-            title: Text('AES'),
+            label: 'AES',
           ),
         ],
         currentIndex: _selectedIndex,
