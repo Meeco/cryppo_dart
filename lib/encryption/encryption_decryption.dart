@@ -13,8 +13,17 @@ typedef DecryptionMethod = Future<Uint8List> Function(
 /// Provided an encrypted+serialized string (in Cryppo's encryption serialization format)
 /// and a [Key] (the type of which depends on the type of encryption used)
 /// return the decrypted binary data.
-Future<List<int>> decryptWithKey({String serialized, EncryptionKey key}) async {
-  return _decryptSerialized(serialized, key);
+Future<List<int>> decryptWithKey({dynamic encrypted, EncryptionKey key}) async {
+  if (encrypted is String) {
+    return _decryptSerialized(encrypted, key);
+  } else if (encrypted is EncryptionResult) {
+    return encrypted.strategy
+        .toService()
+        .decryptEncryptionResultWithKey(encrypted, key);
+  } else {
+    throw Exception(
+        'encryptedObject is neither a serialised String or an EncryptionResult');
+  }
 }
 
 /// Provided an encrypted+serialized string (in Cryppo's encryption serialization format
@@ -87,5 +96,7 @@ Future<List<int>> _decryptSerialized(
   final items = serialized.split('.');
   final encryptionStrategy = encryptionStrategyFromString(items[0]);
 
-  return await encryptionStrategy.toService().decryptWithKey(serialized, key);
+  return await encryptionStrategy
+      .toService()
+      .decryptSerializedStringWithKey(serialized, key);
 }

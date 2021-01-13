@@ -14,7 +14,16 @@ abstract class EncryptionService {
 
   /// Pass a string in Cryppo serialized encrypted format and a [EncryptionKey] (key type dependant on the
   /// scheme being used) to return binary decrypted data.
+  @Deprecated('use decryptSerializedStringWithKey() instead')
   Future<Uint8List> decryptWithKey(String serialized, EncryptionKey key);
+
+  Future<Uint8List> decryptSerializedStringWithKey(
+      String serialized, EncryptionKey key);
+
+  /// decrypts a EncryptionResult object obtained from [encryptWithKey()] using [key],
+  /// use this method to avoid unnescessary serialisation/de-serilaisation during decryption
+  Future<Uint8List> decryptEncryptionResultWithKey(
+      EncryptionResult encryptionResult, EncryptionKey key);
 
   /// Allows encryption with specified encryption artifacts (rather than generated ones).
   Future<EncryptionResult> encryptWithKeyAndArtefacts(

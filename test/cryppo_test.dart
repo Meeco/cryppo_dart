@@ -28,16 +28,28 @@ void main() {
         '5b4365749b5df9db9c1cbe28d3630168561859023d181e1774ae418a400cc50b');
   });
 
-  test('decrypts', () async {
+  test('decrypts serialised strings', () async {
     final derviedKey =
         await deriveKeyWithSerializedOptions('Souvlaki Jay Kunde', serialized);
 
     final decrypted = await decryptWithKey(
         key: derviedKey.key,
-        serialized:
+        encrypted:
             'Aes256Gcm.lOQl2ZU=.QUAAAAAFaXYADAAAAAAXch1m7nNZrl6peqIFYXQAEAAAAACvFVliOK4jwSAZH0JkcO8yAmFkAAUAAABub25lAAA=');
 
     expect(utf8.decode(decrypted), 'Hello');
+  });
+
+  test('decrypts EncryptionResult objects', () async {
+    final key = DataEncryptionKey.generate(32);
+    final data = utf8.encode('This is a test');
+
+    final encrypted = await encryptWithKey(
+        data: data, encryptionStrategy: EncryptionStrategy.aes256Gcm, key: key);
+
+    final decrypted = await decryptWithKey(key: key, encrypted: encrypted);
+
+    expect(utf8.decode(decrypted), 'This is a test');
   });
 
   test('encrypts', () async {
@@ -53,7 +65,7 @@ void main() {
         key: derivedKey.key);
 
     final decrypted = await decryptWithKey(
-        key: derivedKey.key, serialized: encrypted.serialize());
+        key: derivedKey.key, encrypted: encrypted.serialize());
 
     expect(encrypted.serialize().startsWith('Aes256Gcm.'), true);
     expect(utf8.decode(decrypted), plainText);

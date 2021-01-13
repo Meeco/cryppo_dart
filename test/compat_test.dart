@@ -27,7 +27,7 @@ void main() async {
       test('Passes provided key compatibility test $index', () async {
         final key = DataEncryptionKey.loadFromSerialized(testCase['key']);
         final decrypted =
-            await decryptWithKey(key: key, serialized: testCase['serialized']);
+            await decryptWithKey(key: key, encrypted: testCase['serialized']);
         expect(utf8.decode(decrypted), testCase['expected_decryption_result']);
       });
     });
@@ -71,7 +71,7 @@ void main() async {
         final privateKey = KeyPair()
           ..loadPrivateKeyFromPKCS1PemString(testCase['key']);
         final decrypted = await decryptWithKey(
-            serialized: testCase['serialized'], key: privateKey);
+            encrypted: testCase['serialized'], key: privateKey);
         expect(utf8.decode(decrypted), testCase['expected_decryption_result']);
       });
     });

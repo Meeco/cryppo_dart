@@ -71,7 +71,7 @@ main() async {
     () async {
       // decrypt and combine each chunk into a single file
       List<int> decryptedFileData = (await Future.wait(serialisedEncryptedChunks
-              .map((e) => decryptWithKey(serialized: e, key: key))))
+              .map((e) => decryptWithKey(encrypted: e, key: key))))
           .reduce((v, e) => v + e);
       final fileData = fileDescriptor.readAsBytesSync();
       expect(decryptedFileData, fileData,

@@ -10,7 +10,7 @@ environment:
 dependencies:
   cryptography: ^1.4.0
   bson: ^0.3.2
-  pointycastle: ^1.0.2
+  pointycastle: ^2.0.0
   asn1lib: ^0.6.5
   basic_utils: ^2.6.0
   ninja: ^3.0.0

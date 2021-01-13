@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
 import 'encryption_key.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:pointycastle/pointycastle.dart';
@@ -23,7 +25,14 @@ class DataEncryptionKey implements SymmetricKey {
 
   /// Create a new random data encryption key
   DataEncryptionKey.generate(int byteLength) {
-    this._key = SecureRandom().nextBytes(byteLength);
+    final secureRandom = SecureRandom('Fortuna'); // Get directly
+    final seedSource = Random.secure();
+    final seeds = <int>[];
+    for (var i = 0; i < 32; i++) {
+      seeds.add(seedSource.nextInt(255));
+    }
+    secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
+    this._key = secureRandom.nextBytes(byteLength);
   }
 
   /// Convert raw key bytes into a [DataEncryptionKey]
