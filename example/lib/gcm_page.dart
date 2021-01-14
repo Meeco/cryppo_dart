@@ -193,7 +193,7 @@ class _GcmPageState extends State<GcmPage> {
                         serialisedDerivationArtefactsEditingController.text);
                     final decrypted = await decryptWithKey(
                       key: derivedKey.key,
-                      serialized: serialisedEncryptedDataEditingController.text,
+                      encrypted: serialisedEncryptedDataEditingController.text,
                     );
                     setState(() {
                       plainTextEditingController.text = utf8.decode(decrypted);

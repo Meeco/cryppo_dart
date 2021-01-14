@@ -37,7 +37,8 @@ class Aes implements EncryptionService {
   /// Pass a string in Cryppo serialized encrypted format and a [SymmetricKey] (key type dependant on the
   /// scheme being used) to return binary decrypted data.
   @override
-  Future<Uint8List> decryptWithKey(String serialized, EncryptionKey key) {
+  Future<Uint8List> decryptSerializedStringWithKey(
+      String serialized, EncryptionKey key) {
     assert(key is SymmetricKey, 'AES requires a `SymmetricKey`');
     final items = serialized.split('.');
     final decodedPairs = items.sublist(1);
@@ -75,6 +76,23 @@ class Aes implements EncryptionService {
         strategy: _strategy,
         cipherText: cipherText,
         encryptionArtefacts: artefacts);
+  }
+
+  @override
+  Future<Uint8List> decryptEncryptionResultWithKey(
+      EncryptionResult encryptionResult, EncryptionKey key) {
+    final fullCipher = Uint8List.fromList(encryptionResult.cipherText +
+        encryptionResult.encryptionArtefacts.authTag);
+    return _cipher.decrypt(fullCipher,
+        aad: encryptionResult.encryptionArtefacts.authData,
+        secretKey: SecretKey((key as SymmetricKey).bytes),
+        nonce: Nonce(encryptionResult.encryptionArtefacts.salt));
+  }
+
+  @Deprecated('use decryptSerializedStringWithKey() instead')
+  @override
+  Future<Uint8List> decryptWithKey(String serialized, EncryptionKey key) {
+    return decryptSerializedStringWithKey(serialized, key);
   }
 }
 

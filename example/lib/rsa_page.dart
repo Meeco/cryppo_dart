@@ -196,7 +196,7 @@ class _RsaPageState extends State<RsaPage> {
               try {
                 final decryptedText = await decryptWithKey(
                     key: keyPair,
-                    serialized: serialisedCipherTextEditingController.text);
+                    encrypted: serialisedCipherTextEditingController.text);
                 setState(() {
                   plainTextEditingController.text = utf8.decode(decryptedText);
                 });

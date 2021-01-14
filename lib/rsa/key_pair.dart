@@ -18,9 +18,9 @@ class KeyPair implements AsymmetricKey {
      */
     final _privateKey = keyPair.privateKey as pointy_castle.RSAPrivateKey;
     final _publicKey = keyPair.publicKey as pointy_castle.RSAPublicKey;
-    privateKey = RSAPrivateKey(_privateKey.n, _publicKey.e, _privateKey.d,
-        _privateKey.p, _privateKey.q);
-    publicKey = RSAPublicKey(_publicKey.n, _publicKey.e);
+    privateKey = RSAPrivateKey(_privateKey.n, _publicKey.publicExponent,
+        _privateKey.privateExponent, _privateKey.p, _privateKey.q);
+    publicKey = RSAPublicKey(_publicKey.n, _publicKey.publicExponent);
   }
 
   /// Encode the [privateKey] to PKCS8 pem format

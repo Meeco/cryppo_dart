@@ -28,7 +28,8 @@ class _Rsa implements EncryptionService {
     return _encryptWithPublicKey(keyPair.publicKey, data);
   }
 
-  Future<Uint8List> decryptWithKey(String serialized, EncryptionKey key) async {
+  Future<Uint8List> decryptSerializedStringWithKey(
+      String serialized, EncryptionKey key) async {
     assert(key is KeyPair, 'RSA decryption requires a `KeyPair`');
     final KeyPair keyPair = key;
     assert(
@@ -60,6 +61,23 @@ class _Rsa implements EncryptionService {
       List<int> data, EncryptionKey key, EncryptionArtefacts artefacts) {
     // TODO: implement encryptWithKeyAndArtefacts
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Uint8List> decryptEncryptionResultWithKey(
+      EncryptionResult encryptionResult, EncryptionKey key) async {
+    assert(key is KeyPair, 'RSA decryption requires a `KeyPair`');
+    final KeyPair keyPair = key;
+    assert(
+        keyPair.privateKey != null, 'Private key is required for decryption');
+    return _decryptWithPrivateKey(
+        keyPair.privateKey, encryptionResult.cipherText);
+  }
+
+  @Deprecated('use decryptSerializedStringWithKey() instead')
+  @override
+  Future<Uint8List> decryptWithKey(String serialized, EncryptionKey key) {
+    return decryptSerializedStringWithKey(serialized, key);
   }
 }
 
