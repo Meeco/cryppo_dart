@@ -20,6 +20,9 @@ class Signature {
 
   /// Deserialize a signature encoded with [serialize] into its component parts
   Signature.fromSerializedString(String serialized) {
+    if (serialized.contains('+') || serialized.contains('/')) {
+      throw new Exception('string not base64 url safe encoding');
+    }
     final decomposedPayload = serialized.split(".");
     if (decomposedPayload.length != 4) {
       throw Exception('Signature should contain 4 parts');
@@ -31,8 +34,8 @@ class Signature {
 
     if (signed == 'Sign' && signingStrategy.substring(0, 3) == 'Rsa') {
       this.keySize = int.parse(signingStrategy.substring(3));
-      this.signature = base64.decode(encodedSignature);
-      this.data = base64.decode(encodedData);
+      this.signature = base64Url.decode(encodedSignature);
+      this.data = base64Url.decode(encodedData);
     } else {
       throw new Exception('String is not a serialized RSA signature');
     }
@@ -40,6 +43,6 @@ class Signature {
 
   /// Serialize an RSA signature into Cryppo's signature serialization format
   String serialize() {
-    return 'Sign.Rsa$keySize.${base64.encode(signature)}.${base64.encode(data)}';
+    return 'Sign.Rsa$keySize.${base64Url.encode(signature)}.${base64Url.encode(data)}';
   }
 }
