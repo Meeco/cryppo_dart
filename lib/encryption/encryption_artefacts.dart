@@ -11,8 +11,8 @@ class EncryptionArtefacts {
   String version;
 
   /// The salt in a format understood by the cryptography library
-  Nonce get nonce {
-    return Nonce(salt);
+  List<int> get nonce {
+    return salt;
   }
 
   /// Storage for artifacts generated during encrypted (or provided in `encryptWithKeyAndArtefacts`)

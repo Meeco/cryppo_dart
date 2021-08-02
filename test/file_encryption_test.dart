@@ -14,7 +14,7 @@ main() async {
   final derivationArtefacts = DerivationArtefacts.generate();
   final key = await deriveKeyWithSerializedOptions(
       "passphrase", derivationArtefacts.serialize());
-  final fileDescriptor = File('./compat.json');
+  final fileDescriptor = File('./test/compat.json');
   final file = await fileDescriptor.open();
 
   // keep track of the number of chunks this file was devided into

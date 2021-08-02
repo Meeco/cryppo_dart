@@ -29,7 +29,7 @@ class Aes implements EncryptionService {
     final artefacts = EncryptionArtefacts(
       authData: utf8.encode('none'),
       authTag: utf8.encode('none'),
-      salt: Nonce.randomBytes(_saltBytesLength).bytes,
+      salt: SecretKeyData.random(length: _saltBytesLength).bytes,
     );
     return encryptWithKeyAndArtefacts(data, key, artefacts);
   }
@@ -53,10 +53,17 @@ class Aes implements EncryptionService {
     fullCipher.setAll(0, encryptedBytes);
     fullCipher.setAll(encryptedBytes.length, encryptionArtefacts.authTag);
 
-    return _cipher.decrypt(fullCipher,
-        aad: encryptionArtefacts.authData,
-        secretKey: SecretKey((key as SymmetricKey).bytes),
-        nonce: Nonce(encryptionArtefacts.salt));
+    final mac = Mac(encryptionArtefacts.authTag);
+    final secretBox =
+        SecretBox(encryptedBytes, nonce: encryptionArtefacts.nonce, mac: mac);
+
+    return _cipher
+        .decrypt(
+          secretBox,
+          aad: encryptionArtefacts.authData,
+          secretKey: SecretKey((key as SymmetricKey).bytes),
+        )
+        .then((value) => Uint8List.fromList(value));
   }
 
   /// Allows encryption with specified encryption artifacts (rather than generated ones).
@@ -67,10 +74,13 @@ class Aes implements EncryptionService {
         secretKey: SecretKey((key as SymmetricKey).bytes),
         nonce: artefacts.nonce,
         aad: artefacts.authData);
-    final cipherText = _cipher.getDataInCipherText(encrypted);
-    final authTag = _cipher.getMacInCipherText(encrypted);
 
-    artefacts.authTag = authTag.bytes;
+    final cipherText = encrypted.cipherText;
+    final authTag = encrypted.mac.bytes;
+    // final cipherText = _cipher.getDataInCipherText(encrypted);
+    // final authTag = _cipher.getMacInCipherText(encrypted);
+
+    artefacts.authTag = authTag;
 
     return EncryptionResult(
         strategy: _strategy,
@@ -81,12 +91,16 @@ class Aes implements EncryptionService {
   @override
   Future<Uint8List> decryptEncryptionResultWithKey(
       EncryptionResult encryptionResult, EncryptionKey key) {
-    final fullCipher = Uint8List.fromList(encryptionResult.cipherText +
-        encryptionResult.encryptionArtefacts.authTag);
-    return _cipher.decrypt(fullCipher,
-        aad: encryptionResult.encryptionArtefacts.authData,
-        secretKey: SecretKey((key as SymmetricKey).bytes),
-        nonce: Nonce(encryptionResult.encryptionArtefacts.salt));
+    final mac = Mac(encryptionResult.encryptionArtefacts.authTag);
+    final secretBox = SecretBox(encryptionResult.cipherText,
+        nonce: encryptionResult.encryptionArtefacts.nonce, mac: mac);
+    return _cipher
+        .decrypt(
+          secretBox,
+          aad: encryptionResult.encryptionArtefacts.authData,
+          secretKey: SecretKey((key as SymmetricKey).bytes),
+        )
+        .then((value) => Uint8List.fromList(value));
   }
 
   @Deprecated('use decryptSerializedStringWithKey() instead')
@@ -98,18 +112,18 @@ class Aes implements EncryptionService {
 
 /// AES-GCM encryption with a 256-bit key.
 class Aes256Gcm extends Aes {
-  Cipher _cipher = aesGcm;
+  Cipher _cipher = AesGcm.with256bits();
   EncryptionStrategy _strategy = EncryptionStrategy.aes256Gcm;
 }
 
 /// AES-CBC encryption with a 256-bit key.
 class Aes256Cbc extends Aes {
-  Cipher _cipher = aesCbc;
+  Cipher _cipher = AesCbc.with256bits(macAlgorithm: MacAlgorithm.empty);
   EncryptionStrategy _strategy = EncryptionStrategy.aes256Cbc;
 }
 
 /// AES-CTR encryption with a 256-bit key.
 class Aes256Ctr extends Aes {
-  Cipher _cipher = aesCtr;
+  Cipher _cipher = AesCtr.with256bits(macAlgorithm: MacAlgorithm.empty);
   EncryptionStrategy _strategy = EncryptionStrategy.aes256Ctr;
 }

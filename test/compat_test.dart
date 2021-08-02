@@ -9,7 +9,7 @@ import 'package:cryppo/rsa/signature.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() async {
-  final tests = await new File('./compat.json').readAsString();
+  final tests = await new File('./test/compat.json').readAsString();
   final Map<String, dynamic> testData = json.decode(tests);
   final List<dynamic> derivedKeyTestCases =
       testData['encryption_with_derived_key'];

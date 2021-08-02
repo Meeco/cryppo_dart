@@ -1,12 +1,12 @@
 import '../keys/encryption_key.dart';
-import 'package:ninja/asymmetric/rsa/rsa.dart';
+import 'package:ninja/asymmetric/rsa/rsa.dart' as ninja;
 import 'package:pointycastle/pointycastle.dart' as pointy_castle;
 import 'package:basic_utils/basic_utils.dart';
 
 /// An RSA Key pair used for encryption/decryption and signing/verification
 class KeyPair implements AsymmetricKey {
-  RSAPrivateKey privateKey;
-  RSAPublicKey publicKey;
+  ninja.RSAPrivateKey privateKey;
+  ninja.RSAPublicKey publicKey;
 
   KeyPair({this.publicKey, this.privateKey});
 
@@ -18,9 +18,9 @@ class KeyPair implements AsymmetricKey {
      */
     final _privateKey = keyPair.privateKey as pointy_castle.RSAPrivateKey;
     final _publicKey = keyPair.publicKey as pointy_castle.RSAPublicKey;
-    privateKey = RSAPrivateKey(_privateKey.n, _publicKey.publicExponent,
+    privateKey = ninja.RSAPrivateKey(_privateKey.n, _publicKey.publicExponent,
         _privateKey.privateExponent, _privateKey.p, _privateKey.q);
-    publicKey = RSAPublicKey(_publicKey.n, _publicKey.publicExponent);
+    publicKey = ninja.RSAPublicKey(_publicKey.n, _publicKey.publicExponent);
   }
 
   /// Encode the [privateKey] to PKCS8 pem format
@@ -51,25 +51,25 @@ class KeyPair implements AsymmetricKey {
   loadPrivateKeyFromPKCS1PemString(String pem) {
     assert(
         privateKey == null, 'KeyPair already has a privateKey already loaded');
-    privateKey = RSAPrivateKey.fromPEM(pem);
+    privateKey = ninja.RSAPrivateKey.fromPEM(pem);
   }
 
   /// Load the [publicKey] from a PKCS1 encoded pem string
   loadPublicKeyFromPKCS1PemString(String pem) {
     assert(publicKey == null, 'KeyPair already has a publicKey already loaded');
-    publicKey = RSAPublicKey.fromPEM(pem);
+    publicKey = ninja.RSAPublicKey.fromPEM(pem);
   }
 
   /// Load the [privateKey] from a PKCS8 encoded pem string
   loadPrivateKeyFromPKCS8PemString(String pem) {
     assert(
         privateKey == null, 'KeyPair already has a privateKey already loaded');
-    privateKey = RSAPrivateKey.fromPEM(pem);
+    privateKey = ninja.RSAPrivateKey.fromPEM(pem);
   }
 
   /// Load the [publicKey] from a PKCS8 encoded pem string
   loadPublicKeyFromPKCS8PemString(String pem) {
     assert(publicKey == null, 'KeyPair already has a publicKey already loaded');
-    publicKey = RSAPublicKey.fromPEM(pem);
+    publicKey = ninja.RSAPublicKey.fromPEM(pem);
   }
 }
