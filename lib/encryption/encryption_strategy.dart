@@ -33,7 +33,6 @@ extension MapToService on EncryptionStrategy {
       case EncryptionStrategy.rsa4096:
         return Rsa4096();
     }
-    throw 'Encryption strategy has no service';
   }
 
   /// Convert an [EncryptionStrategy] to a string so it can be used in Cryppo's serialization format
@@ -48,7 +47,6 @@ extension MapToService on EncryptionStrategy {
       case EncryptionStrategy.rsa4096:
         return 'Rsa4096';
     }
-    throw 'Strategy "$this" does not have string encoding';
   }
 }
 

@@ -27,7 +27,7 @@ class _CryppoDemoAppState extends State<CryppoDemoApp> {
 }
 
 class BottomTabBar extends StatefulWidget {
-  BottomTabBar({Key key}) : super(key: key);
+  BottomTabBar();
 
   @override
   _BottomTabBarState createState() => _BottomTabBarState();

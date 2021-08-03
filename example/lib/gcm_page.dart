@@ -25,7 +25,7 @@ class _GcmPageState extends State<GcmPage> {
         title: Text(title),
         content: Text(content),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text("OK"),
             onPressed: () {
               Navigator.of(context).pop();
@@ -60,7 +60,7 @@ class _GcmPageState extends State<GcmPage> {
                 decoration: InputDecoration(
                     labelText: 'Serialised Derivation Artefacts'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Generate Random Artifacts'),
                 onPressed: () async {
                   try {
@@ -74,7 +74,7 @@ class _GcmPageState extends State<GcmPage> {
                   }
                 },
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Derive key'),
                 onPressed: () async {
                   if (passphraseEditingController.text == '' ||
@@ -128,7 +128,7 @@ class _GcmPageState extends State<GcmPage> {
                 controller: plainTextEditingController,
                 decoration: InputDecoration(labelText: 'Plain Text'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Encrypt'),
                 onPressed: () async {
                   try {
@@ -184,7 +184,7 @@ class _GcmPageState extends State<GcmPage> {
                 decoration:
                     InputDecoration(labelText: 'Serialised Encryption Data'),
               ),
-              RaisedButton(
+              ElevatedButton(
                 child: Text('Decrypt'),
                 onPressed: () async {
                   try {

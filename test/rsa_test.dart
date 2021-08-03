@@ -26,10 +26,10 @@ Future<void> main() async {
 
   test('can sign and verify', () async {
     final bytes = utf8.encode(longString);
-    final signature = sign(privateKey: keyPair.privateKey, data: bytes);
+    final signature = sign(privateKey: keyPair.privateKey!, data: bytes);
     expect(signature.startsWith('Sign.Rsa4096.'), true);
     final verificationResult =
-        verify(publicKey: keyPair.publicKey, serializedSignature: signature);
+        verify(publicKey: keyPair.publicKey!, serializedSignature: signature);
     expect(true, verificationResult,
         reason: "signature must match original data");
     final newSignature = Signature.fromSerializedString(signature);
@@ -37,7 +37,7 @@ Future<void> main() async {
     expect(
         false,
         verify(
-            publicKey: keyPair.publicKey,
+            publicKey: keyPair.publicKey!,
             serializedSignature: tamperedSignature.serialize()),
         reason: "tempered data must not match signature");
   });
@@ -50,23 +50,23 @@ Future<void> main() async {
       ..loadPublicKeyFromPKCS8PemString(publicKeyPem)
       ..loadPrivateKeyFromPKCS8PemString(privateKeyPem);
 
-    final publicKey = pair.publicKey;
-    final privateKey = pair.privateKey;
+    final publicKey = pair.publicKey!;
+    final privateKey = pair.privateKey!;
 
     // Ninja RSA key pairs do not have equality overload
-    expect(keyPair.publicKey.e, publicKey.e);
-    expect(keyPair.publicKey.n, publicKey.n);
-    expect(keyPair.publicKey.bitSize, publicKey.bitSize);
-    expect(keyPair.publicKey.blockSize, publicKey.blockSize);
+    expect(keyPair.publicKey!.e, publicKey.e);
+    expect(keyPair.publicKey!.n, publicKey.n);
+    expect(keyPair.publicKey!.bitSize, publicKey.bitSize);
+    expect(keyPair.publicKey!.blockSize, publicKey.blockSize);
 
     // Ninja RSA key pairs do not have equality overload
-    expect(keyPair.privateKey.d, privateKey.d);
-    expect(keyPair.privateKey.p, privateKey.p);
-    expect(keyPair.privateKey.q, privateKey.q);
-    expect(keyPair.privateKey.e, privateKey.e);
-    expect(keyPair.privateKey.n, privateKey.n);
-    expect(keyPair.privateKey.bitSize, privateKey.bitSize);
-    expect(keyPair.privateKey.blockSize, privateKey.blockSize);
+    expect(keyPair.privateKey!.d, privateKey.d);
+    expect(keyPair.privateKey!.p, privateKey.p);
+    expect(keyPair.privateKey!.q, privateKey.q);
+    expect(keyPair.privateKey!.e, privateKey.e);
+    expect(keyPair.privateKey!.n, privateKey.n);
+    expect(keyPair.privateKey!.bitSize, privateKey.bitSize);
+    expect(keyPair.privateKey!.blockSize, privateKey.blockSize);
   });
 
   test('can output to pem format and load from PKCS#1 pem string', () {
@@ -76,28 +76,28 @@ Future<void> main() async {
       ..loadPublicKeyFromPKCS1PemString(publicKeyPem)
       ..loadPrivateKeyFromPKCS1PemString(privateKeyPem);
 
-    final publicKey = pair.publicKey;
-    final privateKey = pair.privateKey;
+    final publicKey = pair.publicKey!;
+    final privateKey = pair.privateKey!;
 
-    expect(keyPair.publicKey.e, publicKey.e);
-    expect(keyPair.publicKey.n, publicKey.n);
-    expect(keyPair.publicKey.bitSize, publicKey.bitSize);
-    expect(keyPair.publicKey.blockSize, publicKey.blockSize);
+    expect(keyPair.publicKey!.e, publicKey.e);
+    expect(keyPair.publicKey!.n, publicKey.n);
+    expect(keyPair.publicKey!.bitSize, publicKey.bitSize);
+    expect(keyPair.publicKey!.blockSize, publicKey.blockSize);
 
-    expect(keyPair.privateKey.d, privateKey.d);
-    expect(keyPair.privateKey.p, privateKey.p);
-    expect(keyPair.privateKey.q, privateKey.q);
-    expect(keyPair.privateKey.e, privateKey.e);
-    expect(keyPair.privateKey.n, privateKey.n);
-    expect(keyPair.privateKey.bitSize, privateKey.bitSize);
-    expect(keyPair.privateKey.blockSize, privateKey.blockSize);
+    expect(keyPair.privateKey!.d, privateKey.d);
+    expect(keyPair.privateKey!.p, privateKey.p);
+    expect(keyPair.privateKey!.q, privateKey.q);
+    expect(keyPair.privateKey!.e, privateKey.e);
+    expect(keyPair.privateKey!.n, privateKey.n);
+    expect(keyPair.privateKey!.bitSize, privateKey.bitSize);
+    expect(keyPair.privateKey!.blockSize, privateKey.blockSize);
   });
 
   test(
       'can load PKCS#1 private key string literal and assign each part correctly',
       () {
     final pair = KeyPair()..loadPrivateKeyFromPKCS1PemString(PRIVATE_KEY_PEM);
-    final privateKey = pair.privateKey;
+    final privateKey = pair.privateKey!;
     expect(expectedPublicExponent, privateKey.e,
         reason: 'public exponent must match');
     expect(expectedPrivateExponent, privateKey.d,
@@ -111,7 +111,7 @@ Future<void> main() async {
       'can load PKCS#1 public key string literal and assign each part correctly',
       () {
     final pair = KeyPair()..loadPublicKeyFromPKCS1PemString(PUBLIC_KEY_PEM);
-    final publicKey = pair.publicKey;
+    final publicKey = pair.publicKey!;
     expect(expectedPublicExponent, publicKey.e,
         reason: 'public exponent must match');
     expect(expectedModulus, publicKey.n, reason: 'modulus must match');

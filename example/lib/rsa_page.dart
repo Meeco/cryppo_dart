@@ -15,7 +15,7 @@ KeyPair computeRSAKeys(int keySize) {
 }
 
 class _RsaPageState extends State<RsaPage> {
-  KeyPair keyPair;
+  KeyPair? keyPair;
   bool isGenerateRsaKeyButtonEnabled = true;
   String generateRsaKeyButtonText = 'Generate RSA Pair';
 
@@ -35,7 +35,7 @@ class _RsaPageState extends State<RsaPage> {
         title: Text(title),
         content: Text(content),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text("OK"),
             onPressed: () {
               Navigator.of(context).pop();
@@ -55,7 +55,7 @@ class _RsaPageState extends State<RsaPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
-                child: RaisedButton(
+                child: ElevatedButton(
                   child: Text('$generateRsaKeyButtonText'),
                   onPressed: isGenerateRsaKeyButtonEnabled
                       ? () async {
@@ -72,9 +72,9 @@ class _RsaPageState extends State<RsaPage> {
                             generateRsaKeyButtonText = 'Generate RSA Key Pair';
                             keyPair = newPair;
                             privateKeyEditingController.text =
-                                keyPair.encodePrivateKeyToPKCS1PemString();
+                                keyPair!.encodePrivateKeyToPKCS1PemString();
                             publicKeyEditingController.text =
-                                keyPair.encodePublicKeyToPKCS1PemString();
+                                keyPair!.encodePublicKeyToPKCS1PemString();
                           });
                         }
                       : null,
@@ -82,14 +82,9 @@ class _RsaPageState extends State<RsaPage> {
               ),
               SizedBox(width: 5),
               Expanded(
-                child: RaisedButton(
+                child: ElevatedButton(
                   child: Text('Load from PKCS#1 PEM'),
                   onPressed: () {
-                    if (privateKeyEditingController.text == null ||
-                        publicKeyEditingController == null) {
-                      _showDialog(
-                          'Missing Data', 'Missing private key/public key');
-                    }
                     _reloadKeyPair();
                   },
                 ),
@@ -141,7 +136,7 @@ class _RsaPageState extends State<RsaPage> {
             ),
           ),
           SizedBox(height: 5),
-          RaisedButton(
+          ElevatedButton(
             child: Text('Encrypt with Public Key'),
             onPressed: () async {
               _reloadKeyPair();
@@ -155,7 +150,7 @@ class _RsaPageState extends State<RsaPage> {
               }
               final encryptionResult = await encryptWithKey(
                   data: utf8.encode(textToEncryptEditingController.text),
-                  key: keyPair,
+                  key: keyPair!,
                   encryptionStrategy: EncryptionStrategy.rsa4096);
               setState(() {
                 serialisedCipherTextEditingController.text =
@@ -181,7 +176,7 @@ class _RsaPageState extends State<RsaPage> {
             ),
           ),
           SizedBox(height: 5),
-          RaisedButton(
+          ElevatedButton(
             child: Text('Decrypt with Private Key'),
             onPressed: () async {
               _reloadKeyPair();
@@ -195,7 +190,7 @@ class _RsaPageState extends State<RsaPage> {
               }
               try {
                 final decryptedText = await decryptWithKey(
-                    key: keyPair,
+                    key: keyPair!,
                     encrypted: serialisedCipherTextEditingController.text);
                 setState(() {
                   plainTextEditingController.text = utf8.decode(decryptedText);
@@ -231,7 +226,7 @@ class _RsaPageState extends State<RsaPage> {
               labelText: 'Serialised Signature',
             ),
           ),
-          RaisedButton(
+          ElevatedButton(
             child: Text('Sign with RSA Private Key'),
             onPressed: () {
               _reloadKeyPair();
@@ -245,7 +240,7 @@ class _RsaPageState extends State<RsaPage> {
               }
               final dataToSign = utf8.encode(plainTextEditingController.text);
               final serializedSignature =
-                  sign(privateKey: keyPair.privateKey, data: dataToSign);
+                  sign(privateKey: keyPair!.privateKey!, data: dataToSign);
 
               setState(() {
                 rsaSignatureEditingController.text = serializedSignature;
@@ -257,7 +252,7 @@ class _RsaPageState extends State<RsaPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Flexible(
-                child: RaisedButton(
+                child: ElevatedButton(
                   child: Text('Verify with RSA Public Key'),
                   onPressed: () {
                     _reloadKeyPair();
@@ -272,7 +267,7 @@ class _RsaPageState extends State<RsaPage> {
 
                     try {
                       final result = verify(
-                          publicKey: keyPair.publicKey,
+                          publicKey: keyPair!.publicKey!,
                           serializedSignature:
                               rsaSignatureEditingController.text);
 

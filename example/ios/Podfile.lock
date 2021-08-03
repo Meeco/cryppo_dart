@@ -29,12 +29,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/video_player/ios"
 
 SPEC CHECKSUMS:
-  camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  camera: 3164201dc344383e62282964016528c4f5a9ad50
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  image_picker: e06f7a68f000bd36f552c1847e33cda96ed31f1f
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1
