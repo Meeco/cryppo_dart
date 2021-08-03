@@ -15,7 +15,7 @@ class DerivedKey implements SymmetricKey {
     return key.bytes;
   }
 
-  DerivedKey._({this.key, this.derivationArtefacts});
+  DerivedKey._({required this.key, required this.derivationArtefacts});
 }
 
 /// Provided a user-entered passphrase and artifacts serialized in cryppo's serialization format,

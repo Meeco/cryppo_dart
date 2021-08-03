@@ -12,7 +12,6 @@ extension EncodeStrategy on DerivationStrategy {
       case DerivationStrategy.pbkdf2Hmac:
         return Pbkdf2Hmac();
     }
-    throw 'Strategy "$this" has no registered service';
   }
 
   /// Serialize a [DerivationStrategy] into a string to be used in Cryppo's serialization format
@@ -21,7 +20,6 @@ extension EncodeStrategy on DerivationStrategy {
       case DerivationStrategy.pbkdf2Hmac:
         return 'Pbkdf2Hmac';
     }
-    throw 'Strategy "$this" does not have string encoding';
   }
 }
 

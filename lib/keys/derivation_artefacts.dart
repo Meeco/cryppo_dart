@@ -12,20 +12,20 @@ final _random = Random.secure();
 
 /// Derivation Artefacts from a key derivation strategy (such as Pbkdf2)
 class DerivationArtefacts {
-  String version;
-  List<int> salt;
-  int iterations;
+  late String version;
+  late List<int> salt;
+  late int iterations;
 
   /// Length in bytes
-  int length;
-  DerivationStrategy strategy;
+  late int length;
+  late DerivationStrategy strategy;
 
   DerivationArtefacts({
-    this.version,
-    this.salt,
-    this.iterations,
-    this.length,
-    this.strategy,
+    required this.version,
+    required this.salt,
+    required this.iterations,
+    required this.length,
+    required this.strategy,
   });
 
   /// Randomly generate new key derivation artefacts
@@ -53,9 +53,9 @@ class DerivationArtefacts {
     final deserialized = BSON().deserialize(BsonBinary.from(bsonBuffer));
     final BsonBinary iv = deserialized['iv'];
 
-    iterations = deserialized['i'];
-    salt = iv.byteList;
-    length = deserialized['l'];
+    this.iterations = deserialized['i'];
+    this.salt = iv.byteList;
+    this.length = deserialized['l'];
   }
 
   /// Convert arteacts into Cryppo's artefact serialization format. Can be reloaded with [DerivationArtefacts.fromSerialized]

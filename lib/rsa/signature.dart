@@ -2,10 +2,10 @@ import 'dart:convert';
 
 /// An RSA Signature's data
 class Signature {
-  List<int> signature;
-  List<int> data;
+  late List<int> signature;
+  late List<int> data;
   // in bits
-  int keySize;
+  late int keySize;
 
   Signature._(this.signature, this.data, this.keySize);
 
@@ -16,7 +16,8 @@ class Signature {
   }
 
   /// Create a [Signature] from raw signature information
-  Signature.fromBytes({this.signature, this.data, this.keySize});
+  Signature.fromBytes(
+      {required this.signature, required this.data, required this.keySize});
 
   /// Deserialize a signature encoded with [serialize] into its component parts
   Signature.fromSerializedString(String serialized) {

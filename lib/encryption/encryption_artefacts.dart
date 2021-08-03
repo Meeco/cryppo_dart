@@ -1,25 +1,29 @@
 import 'dart:convert';
 
 import 'package:bson/bson.dart';
-import 'package:cryptography/cryptography.dart';
 
 /// Storage for artifacts generated during encrypted (or provided in `encryptWithKeyAndArtefacts`)
 class EncryptionArtefacts {
-  List<int> salt;
-  List<int> authTag;
-  List<int> authData;
-  String version;
+  late List<int> salt;
+  late List<int> authTag;
+  late List<int> authData;
+  late String version;
 
   /// The salt in a format understood by the cryptography library
   List<int> get nonce {
     return salt;
   }
 
+  EncryptionArtefacts.empty() {
+    this.authData = [];
+    this.salt = [];
+    this.authTag = [];
+    this.version = 'A';
+  }
+
   /// Storage for artifacts generated during encrypted (or provided in `encryptWithKeyAndArtefacts`)
-  EncryptionArtefacts({List<int> salt, List<int> authTag, List<int> authData}) {
-    this.salt = salt ?? [];
-    this.authTag = authTag ?? [];
-    this.authData = authData ?? [];
+  EncryptionArtefacts(
+      {required this.salt, required this.authTag, required this.authData}) {
     // WARNING: Should we put a default version here if no version is supplied?
     version = 'A';
   }

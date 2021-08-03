@@ -20,6 +20,8 @@ class Aes implements EncryptionService {
   Cipher _cipher;
   EncryptionStrategy _strategy;
 
+  Aes(this._cipher, this._strategy);
+
   /// Provided some binary data and a [SymmetricKey] (key type dependant on the encryption scheme being used)
   /// Return an [EncryptionResult]
   @override
@@ -112,18 +114,19 @@ class Aes implements EncryptionService {
 
 /// AES-GCM encryption with a 256-bit key.
 class Aes256Gcm extends Aes {
-  Cipher _cipher = AesGcm.with256bits();
-  EncryptionStrategy _strategy = EncryptionStrategy.aes256Gcm;
+  Aes256Gcm() : super(AesGcm.with256bits(), EncryptionStrategy.aes256Gcm);
 }
 
 /// AES-CBC encryption with a 256-bit key.
 class Aes256Cbc extends Aes {
-  Cipher _cipher = AesCbc.with256bits(macAlgorithm: MacAlgorithm.empty);
-  EncryptionStrategy _strategy = EncryptionStrategy.aes256Cbc;
+  Aes256Cbc()
+      : super(AesCbc.with256bits(macAlgorithm: MacAlgorithm.empty),
+            EncryptionStrategy.aes256Cbc);
 }
 
 /// AES-CTR encryption with a 256-bit key.
 class Aes256Ctr extends Aes {
-  Cipher _cipher = AesCtr.with256bits(macAlgorithm: MacAlgorithm.empty);
-  EncryptionStrategy _strategy = EncryptionStrategy.aes256Ctr;
+  Aes256Ctr()
+      : super(AesCtr.with256bits(macAlgorithm: MacAlgorithm.empty),
+            EncryptionStrategy.aes256Ctr);
 }

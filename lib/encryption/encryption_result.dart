@@ -7,20 +7,18 @@ import '../keys/derivation_artefacts.dart';
 /// Container for encrypted data which may contain key deriviation artefacts.
 /// Can be converted to Cryppo's serialization format by using the [serialize] method.
 class EncryptionResult {
-  EncryptionStrategy strategy;
-  List<int> cipherText;
-  EncryptionArtefacts encryptionArtefacts;
-  DerivationArtefacts derivationArtefacts;
+  late EncryptionStrategy strategy;
+  late List<int> cipherText;
+  late EncryptionArtefacts encryptionArtefacts;
+  DerivationArtefacts? derivationArtefacts;
 
   /// Container for encrypted data which may contain key deriviation artefacts.
   /// Can be converted to Cryppo's serialization format by using the [serialize] method.
   EncryptionResult(
-      {this.strategy,
-      this.cipherText,
-      this.encryptionArtefacts,
-      this.derivationArtefacts})
-      : assert(strategy != null),
-        assert(cipherText != null);
+      {required this.strategy,
+      required this.cipherText,
+      required this.encryptionArtefacts,
+      this.derivationArtefacts});
 
   /// Decode a serialized encrypted string into its components.
   EncryptionResult.fromSerialized(String serializedPayload) {
@@ -52,7 +50,7 @@ class EncryptionResult {
     var serializedString =
         '${strategy.encode()}.$encodedCipherText.$serializedArtefacts';
     if (derivationArtefacts != null) {
-      serializedString += '.${derivationArtefacts.serialize()}';
+      serializedString += '.${derivationArtefacts!.serialize()}';
     }
     return serializedString;
   }

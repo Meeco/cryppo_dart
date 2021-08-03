@@ -7,7 +7,7 @@ import 'package:pointycastle/pointycastle.dart';
 
 /// An encryption key intended for use in Aes/Symmetric key encryption
 class DataEncryptionKey implements SymmetricKey {
-  List<int> _key;
+  late List<int> _key;
 
   /// The raw key
   get bytes {
@@ -37,13 +37,12 @@ class DataEncryptionKey implements SymmetricKey {
 
   /// Convert raw key bytes into a [DataEncryptionKey]
   DataEncryptionKey.loadFromBytes(List<int> bytes) {
-    assert(bytes != null && bytes.isNotEmpty);
+    assert(bytes.isNotEmpty);
     this._key = bytes;
   }
 
   /// Convert a key encoded as base64 from [serialize] into a [DataEncryptionKey]
   DataEncryptionKey.loadFromSerialized(String base64) {
-    assert(base64 != null);
     _key = base64Url.decode(base64);
   }
 

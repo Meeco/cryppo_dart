@@ -9,7 +9,7 @@ import '../keys/derivation_service.dart';
 /// https://en.wikipedia.org/wiki/Pbkdf2
 class Pbkdf2Hmac implements DerivationService {
   Future<List<int>> deriveKey(
-      {String passphrase, DerivationArtefacts artefacts}) async {
+      {required String passphrase, required DerivationArtefacts artefacts}) async {
     final pbkdf2 = Pbkdf2(
       macAlgorithm: Hmac(Sha256()),
       iterations: artefacts.iterations,

@@ -11,13 +11,13 @@ import 'package:flutter_test/flutter_test.dart';
 void main() async {
   final tests = await new File('./test/compat.json').readAsString();
   final Map<String, dynamic> testData = json.decode(tests);
-  final List<dynamic> derivedKeyTestCases =
+  final List<dynamic>? derivedKeyTestCases =
       testData['encryption_with_derived_key'];
-  final List<dynamic> providedKeyTestCases = testData['encryption_with_key'];
-  final List<dynamic> signatureTestCases = testData['signatures'];
+  final List<dynamic>? providedKeyTestCases = testData['encryption_with_key'];
+  final List<dynamic>? signatureTestCases = testData['signatures'];
 
   group('Compatibility', () {
-    providedKeyTestCases
+    providedKeyTestCases!
         // At this stage the Dart version does not support the legacy format
         .where((element) => element['encryption_strategy'] == 'Aes256Gcm')
         // At this stage the Dart version does not support the legacy format
@@ -32,7 +32,7 @@ void main() async {
       });
     });
 
-    derivedKeyTestCases
+    derivedKeyTestCases!
         // At this stage the Dart version does not support the legacy format
         .where((element) => element['format'] == 'latest_version')
         .forEach((testCase) {
@@ -45,7 +45,7 @@ void main() async {
       });
     });
 
-    signatureTestCases.forEach((testCase) {
+    signatureTestCases!.forEach((testCase) {
       final index = signatureTestCases.indexOf(testCase);
       test('Passes compatibility test $index', () async {
         final signature =
@@ -53,7 +53,7 @@ void main() async {
         final keyPair = KeyPair()
           ..loadPublicKeyFromPKCS1PemString(testCase['public_pem']);
         final result = verify(
-            publicKey: keyPair.publicKey,
+            publicKey: keyPair.publicKey!,
             serializedSignature: signature.serialize());
         expect(result, true,
             reason: "public key should verify authentic signature");
