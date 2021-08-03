@@ -60,7 +60,6 @@ class _Rsa implements EncryptionService {
   @override
   Future<EncryptionResult> encryptWithKeyAndArtefacts(
       List<int> data, EncryptionKey key, EncryptionArtefacts artefacts) {
-    // TODO: implement encryptWithKeyAndArtefacts
     throw UnimplementedError();
   }
 

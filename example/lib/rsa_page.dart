@@ -35,7 +35,7 @@ class _RsaPageState extends State<RsaPage> {
         title: Text(title),
         content: Text(content),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text("OK"),
             onPressed: () {
               Navigator.of(context).pop();
@@ -55,7 +55,7 @@ class _RsaPageState extends State<RsaPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Expanded(
-                child: RaisedButton(
+                child: ElevatedButton(
                   child: Text('$generateRsaKeyButtonText'),
                   onPressed: isGenerateRsaKeyButtonEnabled
                       ? () async {
@@ -82,14 +82,9 @@ class _RsaPageState extends State<RsaPage> {
               ),
               SizedBox(width: 5),
               Expanded(
-                child: RaisedButton(
+                child: ElevatedButton(
                   child: Text('Load from PKCS#1 PEM'),
                   onPressed: () {
-                    if (privateKeyEditingController.text == null ||
-                        publicKeyEditingController == null) {
-                      _showDialog(
-                          'Missing Data', 'Missing private key/public key');
-                    }
                     _reloadKeyPair();
                   },
                 ),
@@ -141,7 +136,7 @@ class _RsaPageState extends State<RsaPage> {
             ),
           ),
           SizedBox(height: 5),
-          RaisedButton(
+          ElevatedButton(
             child: Text('Encrypt with Public Key'),
             onPressed: () async {
               _reloadKeyPair();
@@ -181,7 +176,7 @@ class _RsaPageState extends State<RsaPage> {
             ),
           ),
           SizedBox(height: 5),
-          RaisedButton(
+          ElevatedButton(
             child: Text('Decrypt with Private Key'),
             onPressed: () async {
               _reloadKeyPair();
@@ -231,7 +226,7 @@ class _RsaPageState extends State<RsaPage> {
               labelText: 'Serialised Signature',
             ),
           ),
-          RaisedButton(
+          ElevatedButton(
             child: Text('Sign with RSA Private Key'),
             onPressed: () {
               _reloadKeyPair();
@@ -257,7 +252,7 @@ class _RsaPageState extends State<RsaPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Flexible(
-                child: RaisedButton(
+                child: ElevatedButton(
                   child: Text('Verify with RSA Public Key'),
                   onPressed: () {
                     _reloadKeyPair();
