@@ -15,7 +15,7 @@ KeyPair computeRSAKeys(int keySize) {
 }
 
 class _RsaPageState extends State<RsaPage> {
-  KeyPair keyPair;
+  KeyPair? keyPair;
   bool isGenerateRsaKeyButtonEnabled = true;
   String generateRsaKeyButtonText = 'Generate RSA Pair';
 
@@ -72,9 +72,9 @@ class _RsaPageState extends State<RsaPage> {
                             generateRsaKeyButtonText = 'Generate RSA Key Pair';
                             keyPair = newPair;
                             privateKeyEditingController.text =
-                                keyPair.encodePrivateKeyToPKCS1PemString();
+                                keyPair!.encodePrivateKeyToPKCS1PemString();
                             publicKeyEditingController.text =
-                                keyPair.encodePublicKeyToPKCS1PemString();
+                                keyPair!.encodePublicKeyToPKCS1PemString();
                           });
                         }
                       : null,
@@ -155,7 +155,7 @@ class _RsaPageState extends State<RsaPage> {
               }
               final encryptionResult = await encryptWithKey(
                   data: utf8.encode(textToEncryptEditingController.text),
-                  key: keyPair,
+                  key: keyPair!,
                   encryptionStrategy: EncryptionStrategy.rsa4096);
               setState(() {
                 serialisedCipherTextEditingController.text =
@@ -195,7 +195,7 @@ class _RsaPageState extends State<RsaPage> {
               }
               try {
                 final decryptedText = await decryptWithKey(
-                    key: keyPair,
+                    key: keyPair!,
                     encrypted: serialisedCipherTextEditingController.text);
                 setState(() {
                   plainTextEditingController.text = utf8.decode(decryptedText);
@@ -245,7 +245,7 @@ class _RsaPageState extends State<RsaPage> {
               }
               final dataToSign = utf8.encode(plainTextEditingController.text);
               final serializedSignature =
-                  sign(privateKey: keyPair.privateKey, data: dataToSign);
+                  sign(privateKey: keyPair!.privateKey!, data: dataToSign);
 
               setState(() {
                 rsaSignatureEditingController.text = serializedSignature;
@@ -272,7 +272,7 @@ class _RsaPageState extends State<RsaPage> {
 
                     try {
                       final result = verify(
-                          publicKey: keyPair.publicKey,
+                          publicKey: keyPair!.publicKey!,
                           serializedSignature:
                               rsaSignatureEditingController.text);
 
