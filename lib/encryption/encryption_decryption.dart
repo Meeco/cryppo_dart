@@ -13,7 +13,8 @@ typedef DecryptionMethod = Future<Uint8List> Function(
 /// Provided an encrypted+serialized string (in Cryppo's encryption serialization format)
 /// and a [Key] (the type of which depends on the type of encryption used)
 /// return the decrypted binary data.
-Future<List<int>> decryptWithKey({dynamic encrypted, required EncryptionKey key}) async {
+Future<List<int>> decryptWithKey(
+    {dynamic encrypted, required EncryptionKey key}) async {
   if (encrypted is String) {
     return _decryptSerialized(encrypted, key);
   } else if (encrypted is EncryptionResult) {
@@ -58,7 +59,10 @@ Future<EncryptionResult> encryptWithKey({
   required EncryptionKey key,
   required List<int> data,
 }) {
-  return _encrypt(data: data as Uint8List, encryptionStrategy: encryptionStrategy, key: key);
+  return _encrypt(
+      data: data as Uint8List,
+      encryptionStrategy: encryptionStrategy,
+      key: key);
 }
 
 /// Encrypts [data] with a key derived from [passphrase]
@@ -76,8 +80,12 @@ Future<EncryptionResult> encryptWithDerivedKey({
   final derivedKey =
       await deriveNewKeyFromString(passphrase, keyDerivationStrategy);
   final result = await _encrypt(
-      data: data as Uint8List, encryptionStrategy: encryptionStrategy, key: derivedKey);
-  return result..derivationArtefacts = derivedKey.derivationArtefacts;
+    data: data as Uint8List,
+    encryptionStrategy: encryptionStrategy,
+    key: derivedKey,
+  )
+    ..derivationArtefacts = derivedKey.derivationArtefacts;
+  return result;
 }
 
 /// Convert encryption strategy to a service and encrypt the data

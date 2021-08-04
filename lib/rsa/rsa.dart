@@ -45,7 +45,7 @@ class _Rsa implements EncryptionService {
       RSAPublicKey publicKey, List<int> data) {
     final encryptedBytes =
         publicKey.encryptOaep(data, oaepPadder: sha1OaepPadder);
-    return EncryptionResult(
+    return EncryptionResult.fromComponents(
       cipherText: encryptedBytes as List<int>,
       strategy: _strategy,
       encryptionArtefacts: EncryptionArtefacts.empty(),
