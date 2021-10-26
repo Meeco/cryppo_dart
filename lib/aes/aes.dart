@@ -79,12 +79,10 @@ class Aes implements EncryptionService {
 
     final cipherText = encrypted.cipherText;
     final authTag = encrypted.mac.bytes;
-    // final cipherText = _cipher.getDataInCipherText(encrypted);
-    // final authTag = _cipher.getMacInCipherText(encrypted);
 
     artefacts.authTag = authTag;
 
-    return EncryptionResult(
+    return EncryptionResult.fromComponents(
         strategy: _strategy,
         cipherText: cipherText,
         encryptionArtefacts: artefacts);

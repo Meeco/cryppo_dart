@@ -37,9 +37,9 @@ Future<DerivedKey> deriveKeyWithSerializedOptions(
 /// The key and artefacts can be serialized for transfer over the wire and storage.
 Future<DerivedKey> deriveNewKeyFromString(
     String passphrase, DerivationStrategy strategy) async {
-  final DerivationArtefacts artefacts = DerivationArtefacts.generate();
+  final DerivationArtefacts artefacts =
+      DerivationArtefacts.generate(strategy: strategy);
   final DerivationService service = strategy.toService();
-  artefacts.strategy = strategy;
 
   final keyBytes =
       await service.deriveKey(artefacts: artefacts, passphrase: passphrase);
