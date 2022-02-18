@@ -1,10 +1,10 @@
-import '../keys/encryption_key.dart';
+import '../keys/encryption_key.dart' as encryption_key;
 import 'package:ninja/asymmetric/rsa/rsa.dart' as ninja;
 import 'package:pointycastle/pointycastle.dart' as pointy_castle;
 import 'package:basic_utils/basic_utils.dart';
 
 /// An RSA Key pair used for encryption/decryption and signing/verification
-class KeyPair implements AsymmetricKey {
+class KeyPair implements encryption_key.AsymmetricKey {
   ninja.RSAPrivateKey? privateKey;
   ninja.RSAPublicKey? publicKey;
 
