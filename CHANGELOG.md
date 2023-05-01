@@ -9,3 +9,7 @@ First public prerelease
 ## [0.2.0] - Support Null Safety
 
 Supported Null-Safety and upgraded dependencies
+
+## [0.3.0] - Fix import conflict
+
+Update some dependencies and fix an import conflict
