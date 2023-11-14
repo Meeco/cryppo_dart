@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-import 'encryption_key.dart';
+
 import 'package:cryptography/cryptography.dart';
-import 'package:pointycastle/pointycastle.dart';
+import 'package:pointycastle/pointycastle.dart' as pointy_castle;
+
+import 'encryption_key.dart';
 
 /// An encryption key intended for use in Aes/Symmetric key encryption
 class DataEncryptionKey implements SymmetricKey {
@@ -25,13 +27,13 @@ class DataEncryptionKey implements SymmetricKey {
 
   /// Create a new random data encryption key
   DataEncryptionKey.generate(int byteLength) {
-    final secureRandom = SecureRandom('Fortuna'); // Get directly
+    final secureRandom = pointy_castle.SecureRandom('Fortuna'); // Get directly
     final seedSource = Random.secure();
     final seeds = <int>[];
     for (var i = 0; i < 32; i++) {
       seeds.add(seedSource.nextInt(255));
     }
-    secureRandom.seed(KeyParameter(Uint8List.fromList(seeds)));
+    secureRandom.seed(pointy_castle.KeyParameter(Uint8List.fromList(seeds)));
     this._key = secureRandom.nextBytes(byteLength);
   }
 
