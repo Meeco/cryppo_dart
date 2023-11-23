@@ -23,7 +23,7 @@ dev_dependencies:
 
 # Spec testfiles
 false_secrets:
- - /test/compat.json
+  - /test/compat.json
   - /test/rsa_test.dart
 
 # For information on the generic Dart part of this file, see the
