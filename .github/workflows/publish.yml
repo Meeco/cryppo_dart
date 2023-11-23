@@ -8,17 +8,26 @@ on:
 jobs:
   publish:
     permissions:
-      id-token: write # Required for authentication using OIDC
-    runs-on: ubuntu-latest
+      id-token: write # This is required for authentication using OIDC
+    timeout-minutes: 10
+    runs-on: ubuntu-latest      
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: "beta"
-      - run: flutter pub get
-      - run: flutter analyze
-      - run: flutter test
-      - run: dart pub publish --force 
+    - uses: actions/checkout@v3
+
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+
+    - uses: dart-lang/setup-dart@v1
+
+    - name: 'Fetch packages'
+      run: flutter pub get
+      
+    - name: 'Analyze project'
+      run: flutter analyze
+      
+    - name: 'Run tests'
+      run: flutter test
+
+    - name: 'Publish'
+      run: dart pub publish --force
