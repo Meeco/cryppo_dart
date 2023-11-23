@@ -21,6 +21,11 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+# Spec testfiles
+false_secrets:
+ - /test/compat.json
+  - /test/rsa_test.dart
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
