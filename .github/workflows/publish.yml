@@ -21,4 +21,4 @@ jobs:
       - run: flutter pub get
       - run: flutter analyze
       - run: flutter test
-      - run: flutter pub
+      - run: dart pub publish --force 
